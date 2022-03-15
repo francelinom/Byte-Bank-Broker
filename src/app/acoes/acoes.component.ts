@@ -1,4 +1,4 @@
-import { switchMap, tap } from 'rxjs/operators';
+import { filter, switchMap, tap } from 'rxjs/operators';
 import { AcoesService } from './acoes.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -14,6 +14,9 @@ export class AcoesComponent {
   todasAcoes$ = this.acoesService.getAcoes();
 
   filtroPeloInput$ = this.acoesInput.valueChanges.pipe(
+    filter(
+      (valorDigitado) => valorDigitado.length >= 3 || !valorDigitado.length
+    ),
     switchMap((valorDigitado) => this.acoesService.getAcoes(valorDigitado))
   );
 
